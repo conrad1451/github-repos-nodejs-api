@@ -15,7 +15,7 @@ app.get('/', async (req, res) => {
         url: theRepo.html_url,
         description: theRepo.description,
         stars: theRepo.stargazers_count,
-        repoCount: result.length()
+        repoCount: result.length
       };
     // const repo =  {
     //     name: theRepo.name,
