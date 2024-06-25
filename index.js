@@ -10,12 +10,19 @@ app.get('/', async (req, res) => {
       `https://api.github.com/users/${username}/repos`
     );
     const theRepo = result.data[0];
+    // const repo =  {
+    //     name: theRepo.name,
+    //     url: theRepo.html_url,
+    //     description: theRepo.description,
+    //     stars: theRepo.stargazers_count,
+    //     repoCount: result.length();
+    //   };
     const repo =  {
-        name: repo.name,
-        url: repo.html_url,
-        description: repo.description,
-        stars: repo.stargazers_count
-      };
+        name: theRepo.name,
+        url: theRepo.html_url,
+        description: theRepo.description,
+        stars: theRepo.stargazers_count
+    };
 
     res.send(repo);
   } catch (error) {
