@@ -4,10 +4,11 @@ const app = express();
 const PORT = process.env.PORT || 8081;
 // const PORT = 3000;
 
+let curDate = new Date();
 const dict = {
         "Name":"Conrad", 
         "Age":"24",
-        "Date":x,
+        "Date":curDate,
         "programming":"python, but sometimes JavaScript ;)"
         }
 
