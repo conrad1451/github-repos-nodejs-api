@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 8081;
+// const PORT = 3000;
 
 const dict = {"one" : [15, 4.5],
         "two" : [34, 3.3],
