@@ -14,7 +14,8 @@ app.get('/', async (req, res) => {
         name: repo.name,
         url: repo.html_url,
         description: repo.description,
-        stars: repo.stargazers_count
+        stars: repo.stargazers_count,
+        languagesURL: repo.languages_url
       }))
       .sort((a, b) => b.stars - a.stars);
 
