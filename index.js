@@ -5,7 +5,40 @@ const PORT = process.env.PORT || 8081;
 app.use(express.json());
 
 // Global variable to store the fetched database
-let cachedDatabase = null;
+// let cachedDatabase = null;
+
+
+const getDatabase = async function () {
+  let allResults = [];
+  let hasMore = true;
+  let nextCursor = undefined; // Initialize nextCursor
+
+  // CHQ: error handling suggested by Gemini AI
+  try {
+    console.log("lemme print!")
+
+    const result = await axios.get(
+      process.env.MY_GITHUB
+    );
+ 
+    const responseResults = result.map((repo) => {
+      return {
+        name: repo.name,
+        url: repo.url,
+        description: repo.description,
+        stars: repo.stars,
+        languagesURL: repo.languagesURL,
+        languagesContent: repo.languagesContent,
+      };
+    });
+  
+    return responseResults;
+  } catch (error) {
+    console.error("Error in getDatabase:", error);
+    throw error; // Throw the error to the calling function
+    // return []; // Or throw the error, depending on your needs
+  }
+};
 
 // Middleware to fetch and cache the database on any GET request
 app.use(async (req, res, next) => {
@@ -23,15 +56,15 @@ app.use(async (req, res, next) => {
         res.setHeader("Access-Control-Max-Age", 7200);
     }
 
-    if (req.method === 'GET' && !cachedDatabase) {
-        try {
-            cachedDatabase = await getDatabase();
-            console.log('Database fetched and cached.');
-        } catch (error) {
-            console.error("Error fetching initial database:", error);
-            return res.status(500).json({ error: "Failed to fetch initial database" });
-        }
-    }
+    // if (req.method === 'GET' && !cachedDatabase) {
+    //     try {
+    //         cachedDatabase = await getDatabase();
+    //         console.log('Database fetched and cached.');
+    //     } catch (error) {
+    //         console.error("Error fetching initial database:", error);
+    //         return res.status(500).json({ error: "Failed to fetch initial database" });
+    //     }
+    // }
     next();
 });
 
@@ -43,10 +76,11 @@ app.options("/submitformhere", (req, res) => {
 });
 
 app.get('/', async (req, res) => {
-  const username = req.query.username || 'conrad1451';
+  // const username = req.query.username || 'conrad1451';
   try {
     const result = await axios.get(
-      `https://api.github.com/users/${username}/repos`
+      // `https://api.github.com/users/${username}/repos`
+      process.env.MY_GITHUB
     );
     const repos = result.data
       .map((repo) => ({
